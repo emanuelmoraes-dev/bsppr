@@ -1,0 +1,3 @@
+_MESSAGE_INSTALLATION_FINISHED="${_THEME_MESSAGE}\
+Instalação finalizada!
+${_COLOR_END}"
