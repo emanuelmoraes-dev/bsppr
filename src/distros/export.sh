@@ -10,7 +10,7 @@ _distros_export () {
 			distro='apt-based'
 			
 		elif which pacman 1> /dev/null 2>&1; then
-			distro='arch-linux'
+			distro='pacman-based'
 		else
 			# automatically detects the name of the distribution currently running
 			#
@@ -25,7 +25,7 @@ _distros_export () {
 
 	case "$distro" in
 		apt-based)  source "$_SRC/distros/apt-based.sh";;
-		arch-linux) source "$_SRC/distros/arch-linux.sh";;
+		pacman-based) source "$_SRC/distros/arch-linux.sh";;
 		*) __error_args[0]="$distro" && return $_ERROR_INVALID_DISTRO;;
 	esac
 }
