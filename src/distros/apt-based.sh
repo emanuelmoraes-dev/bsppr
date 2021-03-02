@@ -64,3 +64,21 @@ _install_polybar () {
 	sudo apt -y install polybar
 }
 
+# update the system
+_updates () {
+    sudo apt update &&
+    sudo apt full-upgrade -y &&
+    sudo apt clean &&
+    sudo apt autoremove -y &&
+    sudo apt autoclean
+}
+
+# uninstall packages and remove config files
+_uninstall () {
+    sudo apt remove -y bspwm rofi
+    sudo rm $(which polybar)
+    rm -rf ${HOME}/.fehbg ${HOME}/.wallpaper.jpg
+    rm -rf ${HOME}/.local/share/fonts/fonts
+    rm -rf ${HOME}/.config/{bspwm,sxhkd,polybar,rofi,dunst}
+}
+

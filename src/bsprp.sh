@@ -47,6 +47,8 @@ _include () {
 	#         throws:
 	#             _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
 	#     _install_polybar:       function for install "polybar" package
+	#     _updates:               function for update the system
+	#     _uninstall:             function for uninstall packages and remove config files
 	#
 	# throws:
 	#     _ERROR_INVALID_DISTRO:         if the distribution is invalid
@@ -79,18 +81,18 @@ usage: ${0##*/} [flags]
 EOF
 }
 
-_start(){
-    cat <<EOF
- █████╗ ██████╗ ████████╗██████╗  ██████╗ ██████╗ ███╗   ██╗
-██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██╔═══██╗██╔══██╗████╗  ██║
-███████║██████╔╝   ██║   ██████╔╝██║   ██║██████╔╝██╔██╗ ██║
-██╔══██║██╔═══╝    ██║   ██╔═══╝ ██║   ██║██╔══██╗██║╚██╗██║
-██║  ██║██║        ██║   ██║     ╚██████╔╝██║  ██║██║ ╚████║
-╚═╝  ╚═╝╚═╝        ╚═╝   ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝                      
-
-
-EOF
-}
+# _start(){
+#     cat <<EOF
+#  █████╗ ██████╗ ████████╗██████╗  ██████╗ ██████╗ ███╗   ██╗
+# ██╔══██╗██╔══██╗╚══██╔══╝██╔══██╗██╔═══██╗██╔══██╗████╗  ██║
+# ███████║██████╔╝   ██║   ██████╔╝██║   ██║██████╔╝██╔██╗ ██║
+# ██╔══██║██╔═══╝    ██║   ██╔═══╝ ██║   ██║██╔══██╗██║╚██╗██║
+# ██║  ██║██║        ██║   ██║     ╚██████╔╝██║  ██║██║ ╚████║
+# ╚═╝  ╚═╝╚═╝        ╚═╝   ╚═╝      ╚═════╝ ╚═╝  ╚═╝╚═╝  ╚═══╝                      
+#
+#
+# EOF
+# }
 
 # install fonts using svn
 _git_svn_packs () {
@@ -252,6 +254,14 @@ _params () {
 				#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
             	_install &&
             	exit 0;;
+            '--uninstall'|'-u')
+				# uninstall packages and remove config files
+				_uninstall &&
+				exit 0;;
+			'--update'|'-U')
+				# update the system
+				_updates &&
+				exit 0;;
             *)
             	__error_args[0]="$1" &&
             	return $_ERROR_INVALID_ARGUMENT;;
@@ -323,32 +333,3 @@ _main () {
 
 _main "$@"
 
-_updates(){
-    sudo apt update
-    sudo apt full-upgrade -y
-    sudo apt clean
-    sudo apt autoremove -y
-    sudo apt autoclean
-    exit 0
-}
-
-_uninstall(){
-    sudo apt remove -y bspwm rofi
-    sudo rm $(which polybar)
-    rm -rf ${HOME}/.fehbg ${HOME}/.wallpaper.jpg
-    rm -rf ${HOME}/.local/share/fonts/fonts
-    rm -rf ${HOME}/.config/{bspwm,sxhkd,polybar,rofi,dunst}
-    exit 0
-}
-
-while [[ "$1" ]]; do
-    case "$1" in
-        "--install"|"-i") _install ;;
-        "--uninstall"|"-u") _uninstall ;;
-        "--help"|"-h") usage ;;
-        "--version"|"-v") printf "%s\n" "$version" && exit 0 ;;
-        "--update"|"-U") _updates && exit 0 ;;
-        *) echo 'Invalid option.' && usage && exit 1 ;;
-    esac
-    shift
-done
