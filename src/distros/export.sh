@@ -25,7 +25,7 @@ _distros_export () {
 
 	case "$distro" in
 		apt-based)  source "$_SRC/distros/apt-based.sh";;
-		pacman-based) source "$_SRC/distros/arch-linux.sh";;
+		pacman-based) source "$_SRC/distros/pacman-based.sh";;
 		*) __error_args[0]="$distro" && return $_ERROR_INVALID_DISTRO;;
 	esac
 }
