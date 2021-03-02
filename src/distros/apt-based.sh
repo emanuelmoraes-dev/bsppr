@@ -65,12 +65,16 @@ _install_polybar () {
 }
 
 # update the system
+#
+# throws:
+#     _ERROR_UPDATES: if there is an error in updating the system
 _updates () {
     sudo apt update &&
-    sudo apt full-upgrade -y &&
-    sudo apt clean &&
-    sudo apt autoremove -y &&
-    sudo apt autoclean
+    sudo apt full-upgrade -y ||
+	return $_ERROR_UPDATES
+    # sudo apt clean &&
+    # sudo apt autoremove -y &&
+    # sudo apt autoclean
 }
 
 # uninstall packages and remove config files

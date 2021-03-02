@@ -48,6 +48,8 @@ _include () {
 	#             _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
 	#     _install_polybar:       function for install "polybar" package
 	#     _updates:               function for update the system
+	#         throws:
+	#             _ERROR_UPDATES: if there is an error in updating the system
 	#     _uninstall:             function for uninstall packages and remove config files
 	#
 	# throws:
@@ -260,6 +262,9 @@ _params () {
 				exit 0;;
 			'--update'|'-U')
 				# update the system
+				#
+				# throws:
+				#     _ERROR_UPDATES: if there is an error in updating the system
 				_updates &&
 				exit 0;;
             *)
