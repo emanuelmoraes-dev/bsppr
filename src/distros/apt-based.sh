@@ -41,16 +41,25 @@ _MAKE_DEPENDES=(
 	libnl-genl-3-dev
 )
 
+# function for install dependencies
+#
+# throws:
+#     _ERROR_INSTALL_DEPENDES: if error on install dependencies
 _install_dependes () {
 	sudo apt install -y "${_DEPENDES[@]}" ||
 	return $_ERROR_INSTALL_DEPENDES
 }
 
+# function for install dependencies for build
+#
+# throws:
+#     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
 _install_make_dependes () {
 	sudo apt install -y "${_MAKE_DEPENDES[@]}" ||
 	return $_ERROR_INSTALL_MAKE_DEPENDES
 }
 
+# install "polybar" package
 _install_polybar () {
 	sudo apt -y install polybar
 }

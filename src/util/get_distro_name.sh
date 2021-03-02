@@ -1,4 +1,4 @@
-# shows in the standard output the name of the distribution
+# writes to standard output the name of the distro
 # currently running
 #
 # throws:

@@ -26,7 +26,9 @@ _root_verify () {
 #     __error_args: arguments to be displayed in the error message
 #
 # throws:
-#     _ERROR_SOURCE_NOT_ALLOWED: if the scripts cannot be includeed
+#     _ERROR_SOURCE_NOT_ALLOWED:     if the scripts cannot be included
+#     _ERROR_INVALID_DISTRO:         if the distribution is invalid
+#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
 _include () {
 	__error_args=() && # export
 
@@ -37,7 +39,14 @@ _include () {
     return $_ERROR_SOURCE_NOT_ALLOWED
 
 	# exports:
-	#     __error_args: arguments to be displayed in the error message
+	#     __error_args:           arguments to be displayed in the error message
+	#     _install_dependes:      function for install dependencies
+	#         throws:
+	#             _ERROR_INSTALL_DEPENDES: if error on install dependencies
+	#     _install_make_dependes: function for install dependencies for build
+	#         throws:
+	#             _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
+	#     _install_polybar:       function for install "polybar" package
 	#
 	# throws:
 	#     _ERROR_INVALID_DISTRO:         if the distribution is invalid
@@ -83,6 +92,7 @@ _start(){
 EOF
 }
 
+# install fonts using svn
 _git_svn_packs () {
 	if [[ ! -d "${HOME}/.local/share/fonts" ]]; then
 		mkdir -p "${HOME}/.local/share/fonts"
@@ -91,6 +101,7 @@ _git_svn_packs () {
     fc-cache -fv
 }
 
+# clone and build polybar
 _build_polybar () {
 	if [ -d "$_SRC/../tmp/polybar" ]; then
 		rm -rf "$_SRC/../tmp/polybar"
@@ -100,36 +111,99 @@ _build_polybar () {
     sudo ./build.sh
 }
 
+# config packages
+#
+# warnings:
+#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
+#
+# throws:
+#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
 _cfg_all () {
 	local netw &&
 	local distro &&
-    mv "$_SRC/../config/bspwm/" ${HOME}/.config/ &&
-    mv "$_SRC/../config/sxhkd/" ${HOME}/.config/ &&
-    mv "$_DRC/../config/dunst/" ${HOME}/.config/ &&
-    mv "$_SRC/../config/polybar/" ${HOME}/.config/ &&
-    mv "$_SRC/../config/rofi/" ${HOME}/.config/ &&
-    mv "$_SRC/../img/wallpaper.jpg" ${HOME}/.wallpaper.jpg &&
+
+    cp -rv "$_SRC/../config/bspwm/" ${HOME}/.config/ &&
+    cp -rv "$_SRC/../config/sxhkd/" ${HOME}/.config/ &&
+    cp -rv "$_DRC/../config/dunst/" ${HOME}/.config/ &&
+    cp -rv "$_SRC/../config/polybar/" ${HOME}/.config/ &&
+    cp -rv "$_SRC/../config/rofi/" ${HOME}/.config/ &&
+    cp "$_SRC/../img/wallpaper.jpg" ${HOME}/.wallpaper.jpg &&
+
+	# set wallpaper
     feh --bg-scale ${HOME}/.wallpaper.jpg &&
+
     netw=$(ip addr | awk '/state UP/ {print $2}' | sed 's/://g') &&
     sed -i -r "s/[a-z0-9]+ ;redoo/$NETW/g" ${HOME}/.config/polybar/modules.ini &&
+
+	# get the name of the distro
+	# currently running
+	#
+	# throws:
+	#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
 	distro="$($_SRC/util/get_distro_name.sh)" &&
+
+	# get the icon and name for distro
+	#
+	# arguments:
+	#     0: distro name
+	#
+	# warnings:
+	#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
 	distro="$($_SRC/util/get_icon_distro.sh)${distro}" &&
+
+	# config the icon and distro name
     sed -i "s/DISTROOO/$distro/" ${HOME}/.config/polybar/user_modules.ini
-    #sed -i "/$_d/s/^#//" ${HOME}/.config/polybar/scripts/menu
+    # sed -i "/$_d/s/^#//" ${HOME}/.config/polybar/scripts/menu
 }
 
 _ok(){
-#    clear
+	# clear
     printf "$_MESSAGE_INSTALLATION_FINISHED"
     # _start
 }
 
+# install and config all packages
+#
+# warnings:
+#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
+#
+# throws:
+#     _ERROR_INSTALL_DEPENDES: if error on install dependencies
+#     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
+#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
 _install () {
 	# _start &&
+
+	# function for install dependencies
+	#
+	# throws:
+	#     _ERROR_INSTALL_DEPENDES: if error on install dependencies
 	_install_dependes &&
+
+	# function for install dependencies for build
+	#
+	# throws:
+	#     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
 	_install_make_dependes &&
+
+	# install fonts using svn
 	_git_svn_packs &&
-	(_install_polybar || _build_polybar) &&
+
+	(
+		# install "polybar" package
+		_install_polybar ||
+
+		# clone and build polybar
+		_build_polybar
+	) &&
+
+	# config packages
+	#
+	# warnings:
+	#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
+	#
+	# throws:
+	#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
 	_cfg_all
 }
 
@@ -139,8 +213,14 @@ _install () {
 # exports:
 #     __error_args: arguments to be displayed in the error message
 #
+# warnings:
+#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
+#
 # throws:
 #     _ERROR_INVALID_ARGUMENT: if there is an invalid argument
+#     _ERROR_INSTALL_DEPENDES: if error on install dependencies
+#     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
+#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
 _params () {
     __error_args=() && # export
 
@@ -160,6 +240,15 @@ _params () {
             	printf '%s\n' "$_VERSION" &&
             	exit 0;;
             '--install'|'-i')
+				# install and config all packages
+				#
+				# warnings:
+				#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
+				#
+				# throws:
+				#     _ERROR_INSTALL_DEPENDES: if error on install dependencies
+				#     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
+				#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
             	_install &&
             	exit 0;;
             *)
@@ -187,8 +276,10 @@ _main () {
 	#     __error_args: arguments to be displayed in the error message
 	#
 	# throws:
-	#     _ERROR_SOURCE_NOT_ALLOWED: if the scripts cannot be includeed
-    _include &&
+	#     _ERROR_SOURCE_NOT_ALLOWED:     if the scripts cannot be included
+	#     _ERROR_INVALID_DISTRO:         if the distribution is invalid
+	#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
+	_include &&
 
 	# activate the extglob
 	#
@@ -202,9 +293,15 @@ _main () {
 	# exports:
 	#     __error_args: arguments to be displayed in the error message
 	#
+	# warnings:
+	#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
+	#
 	# throws:
 	#     _ERROR_INVALID_ARGUMENT: if there is an invalid argument
-    _params "$@" || (        # interprets the arguments and performs the proper functions for each
+	#     _ERROR_INSTALL_DEPENDES: if error on install dependencies
+	#     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
+	#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
+    _params "$@" || (
 
         # catch errors
 
