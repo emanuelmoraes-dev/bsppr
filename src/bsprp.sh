@@ -156,6 +156,7 @@ _cfg_all () {
     # sed -i "/$_d/s/^#//" ${HOME}/.config/polybar/scripts/menu
 }
 
+# write in standard output the final messages
 _ok(){
 	# clear
     printf "$_MESSAGE_INSTALLATION_FINISHED"
@@ -301,7 +302,10 @@ _main () {
 	#     _ERROR_INSTALL_DEPENDES: if error on install dependencies
 	#     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
 	#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
-    _params "$@" || (
+    _params "$@" &&
+
+    # write in standard output the final messages
+	_ok || (
 
         # catch errors
 
