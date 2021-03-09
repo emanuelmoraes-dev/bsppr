@@ -1,4 +1,6 @@
-# COLORS
+# include colors and themes
+
+## COLORS
 
 _COLOR_END="\e[m"
 _COLOR_RED="\e[31;1m"
@@ -9,7 +11,7 @@ _COLOR_PINK="\e[35;1m"
 _COLOR_CYAN="\e[36;1m"
 _COLOR_WHITE="\e[37;1m"
 
-# THEMES
+## THEMES
 
 [ -z "$_THEME_ERROR" ] && _THEME_ERROR="$_COLOR_RED"
 _THEME_ERROR_END="$_COLOR_END"

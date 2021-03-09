@@ -20,23 +20,40 @@ _root_verify () {
     fi
 }
 
-# include the scripts
+# include global variables from scripts
 #
 # exports:
 #     __error_args: arguments to be displayed in the error message
 #
+# warnings:
+#     _WARNING_CANNOT_IDENTITY_DISTRO: if the distribution could not be identified automatically
+#
 # throws:
-#     _ERROR_SOURCE_NOT_ALLOWED:     if the scripts cannot be included
 #     _ERROR_INVALID_DISTRO:         if the distribution is invalid
-#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
+#     _ERROR_INCLUDE:                if the scripts cannot be included for unexpected error
 _include () {
 	__error_args=() && # export
 
+	# include colors and themes
     source "$_SRC/colors.sh" &&
+
+	# include code errors
     source "$_SRC/errors.sh" &&
-    source "$_SRC/global.sh" &&
-    source "$_SRC/i18n/export.sh" ||
-    return $_ERROR_SOURCE_NOT_ALLOWED
+
+	# initialize state variables
+	#
+	# exports:
+	#     __error_args: arguments to be displayed in the error message
+	#
+	# warnings:
+	#     _WARNING_CANNOT_IDENTITY_DISTRO: if the distribution could not be identified automatically
+	#
+	# throws:
+	#     _ERROR_INVALID_DISTRO:         if the distribution is invalid
+    source "$_SRC/state.sh" &&
+
+	# include i18n variables
+    source "$_SRC/i18n/export.sh" &&
 
 	# exports:
 	#     __error_args:           arguments to be displayed in the error message
@@ -53,9 +70,18 @@ _include () {
 	#     _uninstall:             function for uninstall packages and remove config files
 	#
 	# throws:
-	#     _ERROR_INVALID_DISTRO:         if the distribution is invalid
-	#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
-    source "$_SRC/distros/export.sh"
+	#     _ERROR_INVALID_DISTRO:  if the distribution is invalid
+    source "$_SRC/distros/export.sh" || (
+		
+		# catch erros
+
+		local err=$? &&
+
+		case "$err" in
+			$_ERROR_INVALID_DISTRO) return $err;;
+			*)                      return $_ERROR_INCLUDE;;
+		esac
+	)
 }
 
 # activate the extglob
@@ -119,9 +145,6 @@ _build_polybar () {
 #
 # warnings:
 #     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
-#
-# throws:
-#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
 _cfg_all () {
 	local netw &&
 	local distro &&
@@ -139,13 +162,6 @@ _cfg_all () {
     netw=$(ip addr | awk '/state UP/ {print $2}' | sed 's/://g') &&
     sed -i -r "s/[a-z0-9]+ ;redoo/$NETW/g" ${HOME}/.config/polybar/modules.ini &&
 
-	# get the name of the distro
-	# currently running
-	#
-	# throws:
-	#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
-	distro="$($_SRC/util/get_distro_name.sh)" &&
-
 	# get the icon and name for distro
 	#
 	# arguments:
@@ -153,7 +169,7 @@ _cfg_all () {
 	#
 	# warnings:
 	#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
-	distro="$($_SRC/util/get_icon_distro.sh)${distro}" &&
+	distro="$($_SRC/util/get_icon_distro.sh)${_DISTRO_NAME}" &&
 
 	# config the icon and distro name
     sed -i "s/DISTROOO/$distro/" ${HOME}/.config/polybar/user_modules.ini
@@ -163,7 +179,7 @@ _cfg_all () {
 # write in standard output the final messages
 _ok(){
 	# clear
-    printf "$_MESSAGE_INSTALLATION_FINISHED"
+    printf "$_MESSAGE_INSTALLATION_FINISHED\n"
     # _start
 }
 
@@ -175,7 +191,6 @@ _ok(){
 # throws:
 #     _ERROR_INSTALL_DEPENDES: if error on install dependencies
 #     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
-#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
 _install () {
 	# _start &&
 
@@ -206,9 +221,6 @@ _install () {
 	#
 	# warnings:
 	#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
-	#
-	# throws:
-	#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
 	_cfg_all
 }
 
@@ -225,7 +237,6 @@ _install () {
 #     _ERROR_INVALID_ARGUMENT: if there is an invalid argument
 #     _ERROR_INSTALL_DEPENDES: if error on install dependencies
 #     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
-#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
 _params () {
     __error_args=() && # export
 
@@ -253,7 +264,6 @@ _params () {
 				# throws:
 				#     _ERROR_INSTALL_DEPENDES: if error on install dependencies
 				#     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
-				#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
             	_install &&
             	exit 0;;
             '--uninstall'|'-u')
@@ -286,15 +296,17 @@ _main () {
 	#     _ERROR_ROOT_NOT_ALLOWED: if the user is root
     _root_verify &&          # checks if the user is not root
 
-	# include the scripts
+	# include global variables from scripts
 	#
 	# exports:
 	#     __error_args: arguments to be displayed in the error message
 	#
+	# warnings:
+	#     _WARNING_CANNOT_IDENTITY_DISTRO: if the distribution could not be identified automatically
+	#
 	# throws:
-	#     _ERROR_SOURCE_NOT_ALLOWED:     if the scripts cannot be included
 	#     _ERROR_INVALID_DISTRO:         if the distribution is invalid
-	#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
+	#     _ERROR_INCLUDE:                if the scripts cannot be included for unexpected error
 	_include &&
 
 	# activate the extglob
@@ -316,7 +328,6 @@ _main () {
 	#     _ERROR_INVALID_ARGUMENT: if there is an invalid argument
 	#     _ERROR_INSTALL_DEPENDES: if error on install dependencies
 	#     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
-	#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
     _params "$@" &&
 
     # write in standard output the final messages

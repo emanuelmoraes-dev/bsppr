@@ -1,3 +1,4 @@
 _MESSAGE_INSTALLATION_FINISHED="${_THEME_MESSAGE}\
-Instalação finalizada!
+${0##*/}: MESSAGE: INSTALLATION_FINISHED: Instalação finalizada!\
 ${_THEME_MESSAGE_END}"
+

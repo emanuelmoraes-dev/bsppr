@@ -1,8 +1,8 @@
 # writes to standard output the name of the distro
 # currently running
 #
-# throws:
-#     _ERROR_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
+# warnings:
+#     _WARNING_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
 _get_distro_name () {
 	if [ -f /etc/os-release ]; then
     	# freedesktop.org and systemd
@@ -27,9 +27,10 @@ _get_distro_name () {
     	OS=SuSe
 	elif [ -f /etc/redhat-release ]; then
     	# Older Red Hat, CentOS, etc.
-    	OS=redhat
+    	OS=RedHat
 	else
-		return $_ERROR_CANNOT_IDENTITY_DISTRO
+		>&2 printf "$_WARNING_CANNOT_IDENTITY_DISTRO\n" &&
+		OS=Linux
 	fi &&
 
 	printf "%s" "$OS"
