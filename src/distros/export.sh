@@ -2,7 +2,7 @@
 #     __error_args: arguments to be displayed in the error message
 #
 # throws:
-#     _ERROR_INVALID_DISTRO:         if the distribution is invalid
+#     _ERROR_INVALID_DISTRO:         if the distro is invalid
 _distros_export () {
 	__error_args=() && # export
 

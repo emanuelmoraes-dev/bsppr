@@ -1,11 +1,11 @@
 # writes to standard output the name of the group to which
-# the distribution belongs ("apt-based" or "pacman-based")
+# the distro belongs ("apt-based" or "pacman-based")
 #
 # exports:
 #     __error_args: arguments to be displayed in the error message
 #
 # throws:
-#     _ERROR_INVALID_DISTRO:         if the distribution is invalid
+#     _ERROR_INVALID_DISTRO: if the distro is invalid
 _get_distro () {
 	__error_args=() && # export
 	local distro='' &&

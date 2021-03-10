@@ -2,7 +2,7 @@
 # currently running
 #
 # warnings:
-#     _WARNING_CANNOT_IDENTITY_DISTRO: if The distribution could not be identified automatically
+#     _WARNING_CANNOT_IDENTITY_DISTRO: if The distro could not be identified automatically
 _get_distro_name () {
 	if [ -f /etc/os-release ]; then
     	# freedesktop.org and systemd
