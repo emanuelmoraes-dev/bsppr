@@ -298,7 +298,7 @@ _params () {
             '--version'|'-v')   __version=1;;
             '--install'|'-i')   __install=1;;
             '--uninstall'|'-u') __uninstall=1;;
-			'--update'|'-U')    __updates=1;;
+			'--update'|'-U')    __update=1;;
 			# FLAGS
 			'--pt')             _LANG='pt';;
 			'--en')             _LANG='en';;
