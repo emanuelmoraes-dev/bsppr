@@ -182,7 +182,7 @@ _build_polybar () {
 	fi &&
     git clone --recursive https://github.com/polybar/polybar "$_SRC/../tmp/polybar" &&
     sed -i 's/read /#read /g' "$_SRC/../tmp/polybar/build.sh" &&
-    sudo ./build.sh
+    sudo "$_SRC/../tmp/polybar/build.sh"
 }
 
 # config packages
