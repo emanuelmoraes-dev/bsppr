@@ -1,4 +1,4 @@
 _MESSAGE_OPERATION_FINISHED="${_THEME_MESSAGE}\
-${0##*/}: MESSAGE: OPERATION_FINISHED: Operação finalizada com sucesso!\
+Operação finalizada com sucesso!\
 ${_THEME_MESSAGE_END}"
 
