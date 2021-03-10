@@ -469,13 +469,13 @@ _main () {
         # catch errors
 
         local err="$?" &&
-        _show_error $err "${__error_args[@]}" &&
 
         if [ $err = $_ERROR_INVALID_ARGUMENT ]; then
 			# displays help message
             _usage
         fi &&
 
+        _show_error $err "${__error_args[@]}" &&
         exit $err
     )
 }
