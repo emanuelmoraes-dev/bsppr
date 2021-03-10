@@ -42,9 +42,6 @@ _MAKE_DEPENDES=(
 	community/libnl1
 	python
 	python-sphinx
-	i3-wm
-	# ttf-unifont
-	# siji-git
 	xorg-fonts-misc
 	extra/fontconfig
 	extra/xorg-mkfontscale

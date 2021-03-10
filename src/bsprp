@@ -307,7 +307,7 @@ _params () {
     while [ "$1" ]; do
         case "$1" in
         	# OPTIONS
-            '--help'|'-u')      __help=1;;
+            '--help'|'-h')      __help=1;;
             '--version'|'-v')   __version=1;;
             '--install'|'-i')   __install=1;;
             '--uninstall'|'-u') __uninstall=1;;
