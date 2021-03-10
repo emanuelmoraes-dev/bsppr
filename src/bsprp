@@ -226,7 +226,7 @@ _cfg_all () {
 # write in standard output the final messages
 _ok(){
 	# clear
-    printf "$_MESSAGE_INSTALLATION_FINISHED\n"
+    printf "$_MESSAGE_OPERATION_FINISHED\n"
     # _start
 }
 
@@ -372,8 +372,7 @@ _apply_params () {
 		#
 		# throws:
 		#     _ERROR_UPDATES: if there is an error in updating the system
-		_updates &&
-		exit 0
+		_updates
 	fi &&
 
 	if [ $__install -eq 1 ]; then
@@ -385,14 +384,12 @@ _apply_params () {
 		# throws:
 		#     _ERROR_INSTALL_DEPENDES:      if error on install dependencies
 		#     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
-        _install &&
-        exit 0
+        _install
 	fi &&
 	
 	if [ $__uninstall -eq 1 ]; then
 		# uninstall packages and remove config files
-		_uninstall &&
-		exit 0
+		_uninstall
 	fi
 }
 
