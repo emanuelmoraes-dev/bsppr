@@ -46,7 +46,7 @@ _MAKE_DEPENDES=(
 # throws:
 #     _ERROR_INSTALL_DEPENDES: if error on install dependencies
 _install_dependes () {
-	sudo apt-get install -y "${_DEPENDES[@]}" ||
+	sudo pacman -S "${_DEPENDES[@]}" ||
 	return $_ERROR_INSTALL_DEPENDES
 }
 
@@ -55,13 +55,13 @@ _install_dependes () {
 # throws:
 #     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
 _install_make_dependes () {
-	sudo apt-get install -y "${_MAKE_DEPENDES[@]}" ||
+	sudo pacman -S "${_MAKE_DEPENDES[@]}" ||
 	return $_ERROR_INSTALL_MAKE_DEPENDES
 }
 
 # install "polybar" package
 _install_polybar () {
-	sudo apt-get -y install polybar
+	sudo pacman -S polybar
 }
 
 # update the system
@@ -69,17 +69,13 @@ _install_polybar () {
 # throws:
 #     _ERROR_UPDATES: if there is an error in updating the system
 _updates () {
-    sudo apt-get update &&
-    sudo apt-get full-upgrade -y ||
+    sudo pacman -Syu ||
 	return $_ERROR_UPDATES
-    # sudo apt-get clean &&
-    # sudo apt-get autoremove -y &&
-    # sudo apt-get autoclean
 }
 
 # uninstall packages and remove config files
 _uninstall () {
-    sudo apt-get remove -y bspwm rofi
+    sudo pacman -Rsu bspwm rofi
     sudo rm $(which polybar)
     # rm -rf ${HOME}/.fehbg ${HOME}/.wallpaper.jpg
     rm -rf ${HOME}/.local/share/fonts/fonts
