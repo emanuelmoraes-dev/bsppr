@@ -89,12 +89,6 @@ _root_verify () {
 _include () {
 	__error_args=() && # export
 
-	# include colors and themes
-    source "$_SRC/colors.sh" &&
-
-	# include code errors
-    source "$_SRC/errors.sh" &&
-
 	# initialize flags variables
 	#
 	# exports:
@@ -319,7 +313,7 @@ _params () {
             	__error_args[0]="$1" &&
             	return $_ERROR_INVALID_ARGUMENT;;
         esac &&
-        shift
+        shift 
     done
 }
 
@@ -405,6 +399,12 @@ _main () {
     local __version=0     && # 1 for displays version
     local __help=0        && # 1 for displays help message
     local __update=0      && # 1 for update your system
+
+	# include colors and themes
+    source "$_SRC/colors.sh" &&
+
+	# include code errors
+    source "$_SRC/errors.sh" &&
 
 	# checks if the user is not root
 	#
