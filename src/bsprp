@@ -79,6 +79,7 @@ _root_verify () {
 #
 # exports:
 #     __error_args: arguments to be displayed in the error message
+#     _usage: function for displays help message
 #
 # warnings:
 #     _WARNING_CANNOT_IDENTITY_DISTRO: if the distro could not be identified automatically
@@ -88,6 +89,12 @@ _root_verify () {
 #     _ERROR_INCLUDE:        if the scripts cannot be included for unexpected error
 _include () {
 	__error_args=() && # export
+
+	# include colors and themes
+    source "$_SRC/colors.sh" &&
+
+	# include code errors
+    source "$_SRC/errors.sh" &&
 
 	# initialize flags variables
 	#
@@ -131,7 +138,7 @@ _include () {
 
 		case "$err" in
 			$_ERROR_INVALID_DISTRO) return $err;;
-			*)                      return $_ERROR_INCLUDE;;
+			*) [ "$_ERROR_INCLUDE" ] && return $_ERROR_INCLUDE || return 1;;
 		esac
 	)
 }
@@ -400,11 +407,19 @@ _main () {
     local __help=0        && # 1 for displays help message
     local __update=0      && # 1 for update your system
 
-	# include colors and themes
-    source "$_SRC/colors.sh" &&
-
-	# include code errors
-    source "$_SRC/errors.sh" &&
+	# include global variables from scripts
+	#
+	# exports:
+	#     __error_args: arguments to be displayed in the error message
+	#     _usage: function for displays help message
+	#
+	# warnings:
+	#     _WARNING_CANNOT_IDENTITY_DISTRO: if the distro could not be identified automatically
+	#
+	# throws:
+	#     _ERROR_INVALID_DISTRO: if the distro is invalid
+	#     _ERROR_INCLUDE:        if the scripts cannot be included for unexpected error
+	_include &&
 
 	# checks if the user is not root
 	#
@@ -428,19 +443,6 @@ _main () {
 	#     __help:       1 for displays help message
 	#     __update:     1 for update your system
     _params "$@" &&
-
-	# include global variables from scripts
-	#
-	# exports:
-	#     __error_args: arguments to be displayed in the error message
-	#
-	# warnings:
-	#     _WARNING_CANNOT_IDENTITY_DISTRO: if the distro could not be identified automatically
-	#
-	# throws:
-	#     _ERROR_INVALID_DISTRO: if the distro is invalid
-	#     _ERROR_INCLUDE:        if the scripts cannot be included for unexpected error
-	_include &&
 
 	# apply interpreted arguments
 	#
