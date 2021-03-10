@@ -55,9 +55,9 @@ _install_dependes () {
 #     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
 _install_make_dependes () {
 	if [ "$(pacman -Qu)" ]; then
-		sudo pacman -S --noconfirm "${_MAKE_DEPENDES[@]}"
+		sudo pacman -S --noconfirm --needed "${_MAKE_DEPENDES[@]}"
 	else
-		sudo pacman -S --noconfirm --asdeps --needed "${_MAKE_DEPENDES[@]}"
+		sudo pacman -S --noconfirm --needed --asdeps "${_MAKE_DEPENDES[@]}"
 	fi ||
 	return $_ERROR_INSTALL_MAKE_DEPENDES
 }
