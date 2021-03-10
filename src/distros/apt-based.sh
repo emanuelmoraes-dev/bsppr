@@ -29,14 +29,14 @@ _MAKE_DEPENDES=(
 	libxcb-image0-dev
 	libxcb-ewmh-dev
 	libxcb-icccm4-dev
+	libxcb-cursor-dev
+	libxcb-xrm-dev
+	libxcb-xkb-dev
 	libcurl4-openssl-dev
 	libjsoncpp-dev
 	libpulse-dev
 	libmpdclient-dev
 	libasound2-dev
-	libxcb-cursor-dev
-	libxcb-xrm-dev
-	libxcb-xkb-dev
 	libnl-genl-3-dev
 )
 

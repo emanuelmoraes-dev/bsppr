@@ -168,8 +168,8 @@ _active_extglob () {
 
 # install fonts using svn
 _git_svn_packs () {
-	if [[ ! -d "${HOME}/.local/share/fonts" ]]; then
-		mkdir -p "${HOME}/.local/share/fonts"
+	if [ -d "${HOME}/.local/share/fonts/fonts" ]; then
+		rm -rf "${HOME}/.local/share/fonts/fonts"
 	fi &&
     svn export https://github.com/terroo/fonts/trunk/fonts ${HOME}/.local/share/fonts/fonts &&
     fc-cache -fv
@@ -177,12 +177,24 @@ _git_svn_packs () {
 
 # clone and build polybar
 _build_polybar () {
+	local npath="$(pwd)" &&
+	local err &&
+
 	if [ -d "$_SRC/../tmp/polybar" ]; then
-		rm -rf "$_SRC/../tmp/polybar"
+		sudo rm -rf "$_SRC/../tmp/polybar"
 	fi &&
+
     git clone --recursive https://github.com/polybar/polybar "$_SRC/../tmp/polybar" &&
-    sed -i 's/read /#read /g' "$_SRC/../tmp/polybar/build.sh" &&
-    sudo "$_SRC/../tmp/polybar/build.sh"
+	cd "$_SRC/../tmp/polybar" && # in
+
+    sed -i 's/read /#read /g' ./build.sh &&
+    sudo ./build.sh &&
+
+    cd "$npath" || ( # out
+    	err=$?
+		cd "$npath" # out
+		return $err
+	)
 }
 
 # config packages
@@ -195,7 +207,7 @@ _cfg_all () {
 
     cp -rvf "$_SRC/../config/bspwm/" ${HOME}/.config/ &&
     cp -rvf "$_SRC/../config/sxhkd/" ${HOME}/.config/ &&
-    cp -rvf "$_DRC/../config/dunst/" ${HOME}/.config/ &&
+    cp -rvf "$_SRC/../config/dunst/" ${HOME}/.config/ &&
     cp -rvf "$_SRC/../config/polybar/" ${HOME}/.config/ &&
     cp -rvf "$_SRC/../config/rofi/" ${HOME}/.config/ &&
 
