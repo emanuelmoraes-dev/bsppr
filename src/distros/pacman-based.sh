@@ -124,7 +124,7 @@ _uninstall () {
     sudo pacman -Rsu $(pacman -Qqtd)
     sudo rm $(which polybar)
     # rm -rf ${HOME}/.fehbg ${HOME}/.wallpaper.jpg
-    rm -rf ${HOME}/.local/share/fonts/fonts
-    rm -rf ${HOME}/.config/{bspwm,sxhkd,polybar,rofi,dunst}
+    rm -rf "${HOME}/.local/share/fonts/fonts"
+    rm -rf "${HOME}/.config/{bspwm,sxhkd,polybar,rofi,dunst}"
 }
 
