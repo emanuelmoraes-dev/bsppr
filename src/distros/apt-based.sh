@@ -1,8 +1,12 @@
 _DEPENDES=(
 	bspwm
-	sxhkd
-	subversion
 	rofi
+)
+
+_MAKE_DEPENDES=(
+	git
+	subversion
+	sxhkd
 	feh
 	numlockx
 	compton
@@ -11,11 +15,6 @@ _DEPENDES=(
 	imagemagick
 	webp
 	unifont
-	gnome-terminal
-	git
-)
-
-_MAKE_DEPENDES=(
 	build-essential
 	cmake
 	cmake-data
@@ -73,13 +72,13 @@ _updates () {
     sudo apt-get full-upgrade -y ||
 	return $_ERROR_UPDATES
     # sudo apt-get clean &&
-    # sudo apt-get autoremove -y &&
     # sudo apt-get autoclean
 }
 
 # uninstall packages and remove config files
 _uninstall () {
-    sudo apt-get remove -y bspwm rofi
+    sudo apt-get remove bspwm rofi
+    sudo apt-get autoremove
     sudo rm $(which polybar)
     # rm -rf ${HOME}/.fehbg ${HOME}/.wallpaper.jpg
     rm -rf ${HOME}/.local/share/fonts/fonts

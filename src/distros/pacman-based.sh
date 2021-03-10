@@ -1,8 +1,12 @@
 _DEPENDES=(
 	bspwm
-	sxhkd
-	subversion
 	rofi
+)
+
+_MAKE_DEPENDES=(
+	git
+	subversion
+	sxhkd
 	feh
 	numlockx
 	compton
@@ -11,11 +15,6 @@ _DEPENDES=(
 	imagemagick
 	webp
 	unifont
-	gnome-terminal
-	git
-)
-
-_MAKE_DEPENDES=(
 	build-essential
 	cmake
 	cmake-data
@@ -46,7 +45,7 @@ _MAKE_DEPENDES=(
 # throws:
 #     _ERROR_INSTALL_DEPENDES: if error on install dependencies
 _install_dependes () {
-	sudo pacman -S "${_DEPENDES[@]}" ||
+	sudo pacman -S --noconfirm "${_DEPENDES[@]}" ||
 	return $_ERROR_INSTALL_DEPENDES
 }
 
@@ -55,13 +54,17 @@ _install_dependes () {
 # throws:
 #     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
 _install_make_dependes () {
-	sudo pacman -S "${_MAKE_DEPENDES[@]}" ||
+	if [ "$(pacman -Qu)" ]; then
+		sudo pacman -S --noconfirm "${_MAKE_DEPENDES[@]}"
+	else
+		sudo pacman -S --noconfirm --asdeps --needed "${_MAKE_DEPENDES[@]}"
+	fi ||
 	return $_ERROR_INSTALL_MAKE_DEPENDES
 }
 
 # install "polybar" package
 _install_polybar () {
-	sudo pacman -S polybar
+	sudo pacman -S --noconfirm polybar
 }
 
 # update the system
@@ -69,13 +72,14 @@ _install_polybar () {
 # throws:
 #     _ERROR_UPDATES: if there is an error in updating the system
 _updates () {
-    sudo pacman -Syu ||
+    sudo pacman -Syu --noconfirm ||
 	return $_ERROR_UPDATES
 }
 
 # uninstall packages and remove config files
 _uninstall () {
     sudo pacman -Rsu bspwm rofi
+    sudo pacman -Rsu $(pacman -Qqtd)
     sudo rm $(which polybar)
     # rm -rf ${HOME}/.fehbg ${HOME}/.wallpaper.jpg
     rm -rf ${HOME}/.local/share/fonts/fonts
