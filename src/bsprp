@@ -357,7 +357,7 @@ _apply_params () {
 
 	if [ $__help -eq 1 ]; then
 		# displays help message
-        usage &&
+        _usage &&
         exit 0
     fi &&
 
@@ -471,7 +471,7 @@ _main () {
 
         if [ $err = $_ERROR_INVALID_ARGUMENT ]; then
 			# displays help message
-            usage
+            _usage
         fi &&
 
         exit $err
