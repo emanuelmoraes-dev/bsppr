@@ -11,7 +11,7 @@ ${0##*/}: ERROR: INCLUDE: Não foi possível importar os scripts! [Código: %s]\
 ${_THEME_ERROR_END}"
 
 _ERROR_MESSAGE_EXTGLOB="${_THEME_ERROR}\
-${0##*/}: ERROR: EXTGLOB: Não foi spossível ativar o 'extglob'! [Código: %s]\
+${0##*/}: ERROR: EXTGLOB: Não foi possível ativar o 'extglob'! [Código: %s]\
 ${_THEME_ERROR_END}"
 
 _ERROR_MESSAGE_INVALID_ARGUMENT="${_THEME_ERROR}\

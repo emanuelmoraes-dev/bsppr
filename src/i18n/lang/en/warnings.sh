@@ -1,0 +1,8 @@
+_WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO="${_THEME_WARNING}\
+${0##*/}: WARNING: ICON_NOT_AVAILABLE_FOR_DISTRO: The '%s' icon is not available!\
+${_THEME_WARNING_END}"
+
+_WARNING_CANNOT_IDENTITY_DISTRO="${_THEME_WARNING}\
+${0##*/}: WARNING: CANNOT_IDENTITY_DISTRO: We were unable to identify your distribution automatically!\
+${_THEME_WARNING}"
+
