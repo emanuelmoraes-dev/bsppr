@@ -96,6 +96,32 @@ _include () {
 	# include code errors
     source "$_SRC/errors.sh" &&
 
+	# include utility functions
+	#
+	# exports:
+	#     _get_distro:
+	#         description:
+	#             function for writes to standard output the name of the group to which
+	#             the distro belongs ("apt-based" or "pacman-based")
+	#         exports:
+	#             __error_args: arguments to be displayed in the error message
+	#         throws:
+	#             _ERROR_INVALID_DISTRO: if the distro is invalid
+	#     _get_distro_name:
+	#         description:
+	#             function for writes to standard output the name of the distro
+	#             currently running
+	#         warnings:
+	#             _WARNING_CANNOT_IDENTITY_DISTRO: if The distro could not be identified automatically
+	#     _get_icon_distro:
+	#         description:
+	#             writes to standard output the icon for distro
+	#         arguments:
+	#             0: distro name
+	#         warnings:
+	#             _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
+    source "$_SRC/util.sh" &&
+
 	# initialize flags variables
 	#
 	# exports:
@@ -115,18 +141,30 @@ _include () {
     source "$_SRC/i18n/export.sh" &&
 
 	# exports:
-	#     __error_args:           arguments to be displayed in the error message
-	#     _install_dependes:      function for install dependencies
+	#     __error_args:
+	#         description:
+	#             arguments to be displayed in the error message
+	#     _install_dependes:
+	#         description:
+	#             function for install dependencies
 	#         throws:
 	#             _ERROR_INSTALL_DEPENDES:      if error on install dependencies
-	#     _install_make_dependes: function for install dependencies for build
+	#     _install_make_dependes:
+	#         description:
+	#             function for install dependencies for build
 	#         throws:
 	#             _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
-	#     _install_polybar:       function for install "polybar" package
-	#     _updates:               function for update the system
+	#     _install_polybar:
+	#         description:
+	#             function for install "polybar" package
+	#     _updates:
+	#         description:
+	#             function for update the system
 	#         throws:
 	#             _ERROR_UPDATES:               if there is an error in updating the system
-	#     _uninstall:             function for uninstall packages and remove config files
+	#     _uninstall:
+	#         description:
+	#             function for uninstall packages and remove config files
 	#
 	# throws:
 	#     _ERROR_INVALID_DISTRO:  if the distro is invalid
@@ -228,7 +266,7 @@ _cfg_all () {
 	#
 	# warnings:
 	#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
-	distro="$($_SRC/util/get_icon_distro.sh $_DISTRO_NAME)$_VISIBLE_DISTRO_NAME" &&
+	distro="$(_get_icon_distro $_DISTRO_NAME)$_VISIBLE_DISTRO_NAME" &&
 
 	# config the icon and distro name
     sed -i "s/DISTROOO/$distro/" ${HOME}/.config/polybar/user_modules.ini

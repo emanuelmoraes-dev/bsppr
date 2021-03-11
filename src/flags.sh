@@ -19,7 +19,7 @@ _flags () {
 		#
 		# warnings:
 		#     _WARNING_CANNOT_IDENTITY_DISTRO: if The distro could not be identified automatically
-		_DISTRO_NAME="$("$_SRC/util/get_distro_name.sh")"
+		_DISTRO_NAME="$(_get_distro_name)"
 	fi&&if [ -z "$_VISIBLE_DISTRO_NAME" ]; then
 		# _VISIBLE_DISTRO_NAME: "Linux Mint", "Ubuntu", "Debian", "Arch Linux" or outhers
 		#
@@ -36,7 +36,7 @@ _flags () {
 		#
 		# throws:
 		#     _ERROR_INVALID_DISTRO: if the distro is invalid
-		_DISTRO="$("$_SRC/util/get_distro.sh")"
+		_DISTRO="$(_get_distro)"
 	fi&&if [ -z "$_USE_COLORS" ]; then
 		# _USE_COLORS: 0 to not colors
 		_USE_COLORS=1
