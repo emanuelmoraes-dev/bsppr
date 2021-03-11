@@ -17,7 +17,7 @@ Wait until the script ends. For more information run: `bsprp/src/bsprp --help`.
 # Uninstall
 ```sh
 git clone https://github.com/emanuelmoraes-dev/bsprp
-sh bsprp/src/bsprp --uninstall
+sh bsprp/src/bsprp --remove
 ```
 
 # This project is a fork of aptporn
