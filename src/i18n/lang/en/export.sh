@@ -1,5 +1,5 @@
-source "$_SRC/i18n/lang/pt/errors.sh"
-source "$_SRC/i18n/lang/pt/warnings.sh"
-source "$_SRC/i18n/lang/pt/messages.sh"
-source "$_SRC/i18n/lang/pt/usage.sh"
+source "$_SRC/i18n/lang/en/errors.sh"
+source "$_SRC/i18n/lang/en/warnings.sh"
+source "$_SRC/i18n/lang/en/messages.sh"
+source "$_SRC/i18n/lang/en/usage.sh"
 

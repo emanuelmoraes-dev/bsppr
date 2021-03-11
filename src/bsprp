@@ -286,10 +286,24 @@ _ok(){
 #     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
 #
 # throws:
+#     _ERROR_ROOT_NOT_ALLOWED: if the user is root
+#     _ERROR_EXTGLOB: if extglob could not be activated
 #     _ERROR_INSTALL_DEPENDES:      if error on install dependencies
 #     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
 _install () {
 	# _start &&
+
+	# checks if the user is not root
+	#
+	# throws:
+	#     _ERROR_ROOT_NOT_ALLOWED: if the user is root
+    _root_verify &&
+
+	# activate the extglob
+	#
+	# throws:
+	#     _ERROR_EXTGLOB: if extglob could not be activated
+    _active_extglob &&
 
 	# function for install dependencies
 	#
@@ -384,6 +398,9 @@ _params () {
 #     __help:       1 for displays help message
 #     __update:     1 for update your system
 #
+# exports:
+#     _usage: function for displays help message
+#
 # warnings:
 #     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
 #
@@ -405,6 +422,12 @@ _apply_params () {
 	if [ "$_SET_WALLPAPER" = "0" ]; then
 		_WALLPAPER=''
 	fi &&
+
+	# include i18n variables
+	#
+	# exports:
+	#     _usage: function for displays help message
+    source "$_SRC/i18n/export.sh" &&
 
 	if [ $__help -eq 1 ]; then
 		# displays help message
@@ -432,6 +455,8 @@ _apply_params () {
 		#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
 		#
 		# throws:
+		#     _ERROR_ROOT_NOT_ALLOWED:      if the user is root
+		#     _ERROR_EXTGLOB:               if extglob could not be activated
 		#     _ERROR_INSTALL_DEPENDES:      if error on install dependencies
 		#     _ERROR_INSTALL_MAKE_DEPENDES: if error on install dependencies for build
         _install
@@ -468,18 +493,6 @@ _main () {
 	#     _ERROR_INCLUDE:        if the scripts cannot be included for unexpected error
 	_include &&
 
-	# checks if the user is not root
-	#
-	# throws:
-	#     _ERROR_ROOT_NOT_ALLOWED: if the user is root
-    _root_verify &&
-
-	# activate the extglob
-	#
-	# throws:
-	#     _ERROR_EXTGLOB: if extglob could not be activated
-    _active_extglob &&
-
 	# interprets the arguments
 	#
 	# exports:
@@ -500,6 +513,9 @@ _main () {
 	#     __version:    1 for displays version
 	#     __help:       1 for displays help message
 	#     __update:     1 for update your system
+	#
+	# exports:
+	#     _usage: function for displays help message
 	#
 	# warnings:
 	#     _WARNING_ICON_NOT_AVAILABLE_FOR_DISTRO: if there is no icon available for distro
