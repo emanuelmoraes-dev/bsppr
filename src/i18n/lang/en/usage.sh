@@ -3,46 +3,43 @@ _usage () {
 	cat <<EOF
  usage: ${0##*/} [Options|Flags]
    Options:
-     --install,  -i  Instala bsprp
-     --unistall, -u  Desinstala bsprp
-     --version,  -v  Mostra a versão
-     --help,     -h  Mostra uma mensagem de ajuda
-     --update,   -U  Atualiza o seu sistema
+     --install,  -i  Install bsprp
+     --remove,   -r  Remove bsprp
+     --version,  -v  Displays version
+     --help,     -h  Displays help message
+     --update,   -U  Update your system
    Flags:
-     --pt            Define a linguagem para porguês. Detectado
-                     automaticamente por padrão
-     --en            Define a linguagem para inglês. Detectado
-                     automaticamente por padrão
-     --use-colors    Coloriza as mensagens, erros e avisos. Ista flag é
-                     habilitada por padrão
-     --not-colors    Não coloriza as mensagens, erros e avisos. Ista flag
-                     não é habilitada por padrão
-     --use-wallpaper Define um novo papel de parede. Esta flag é
-                     habilitada por padrão
-     --not-wallpaper Não define um novo papel de parede. Esta flag não é
-                     habilitada por padrão
-     --wallpaper     O próximo parâmetro define o caminho para o novo
-                     papel de parede. Valor padrão:
-                     bsprp/img/wallpaper.jpg
-     --apt-based     Usa apt-get para instalar os pacotes. Detectado
-                     automaticamente por padrão
-     --pacman-based  Usa pacman para instalar os pacotes. Detectado
-                     automaticamente por padrão
-     --linux-mint    Define o nome da distribuição para "Linux Mint".
-                     Detectado automaticamente por padrão
-     --ubuntu        Define o nome da distribuição para "Ubuntu".
-                     Detectado automaticamente por padrão
-     --debian        Define o nome da distribuição para "Debian".
-                     Detectado automaticamente por padrão
-     --arch-linux    Define o nome da distribuição para "Arch Linux".
-                     Detectado automaticamente por padrão
-     --generic       Define o nome da distribuição para "Linux". Detectado
-                     automaticamente por padrão
-     --distroname    O próximo parâmetro define o nome da distribuição que
-                     irá estar graficamente visível (isto não identifica a
-                     sua distribuição). Valor padrão: o mesmo valor
-                     definido por --linux-mint, --ubuntu, --debian,
-                     --arch-linux ou --generic
+     --pt            Defines the language for portuguese. Auto detected by
+                     default
+     --en            Defines the language for english. Auto detected by
+                     default
+     --use-colors    Colorize the messages, errors and warnings. Is set
+                     by default
+     --not-colors    Did not colorize messages, errors and warnings.
+                     Is not set by default
+     --use-wallpaper Set a new wallpaper. Is set by default
+     --not-wallpaper Not set a new wallpaper. Is not set by default
+     --wallpaper     The next parameter defines the path for a new
+                     wallpaper. Default value: bsprp/img/wallpaper.jpg
+     --apt-based     Uses apt-get for install packages. Auto detected by
+                     default
+     --pacman-based  Uses pacman for install packages. Auto detected by
+                     default
+     --linux-mint    Defines the name of distro for "Linux Mint". Auto
+                     detected by default
+     --ubuntu        Defines the name of distro for "Ubuntu". Auto
+                     detected by default
+     --debian        Defines the name of distro for "Debian". Auto
+                     detected by default
+     --arch-linux    Defines the name of distro for "Arch Linux". Auto
+                     detected by default
+     --generic       Defines the name of distro for "Linux". Auto detected
+                     by default
+     --distroname    The next parameter defines the name of distro that
+                     will be graphically visible (it is not identifies
+                     your distro). Default value: the same value defined
+                     by --linux-mint,--ubuntu, --debian, --arch-linux or
+                     --generic
 
  * Marcos Oliveira - <terminalroot.com.br> - APTPORN 2.0
  * Emanuel Moraes - <https://github.com/emanuelmoraes-dev> - BSPRP 3.0

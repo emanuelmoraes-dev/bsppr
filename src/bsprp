@@ -10,7 +10,7 @@
 # usage: bsprp [Options|Flags]
 #   Options:
 #     --install,  -i  Install bsprp
-#     --unistall, -u  Uninstall bsprp
+#     --remove,   -r  Remove bsprp
 #     --version,  -v  Displays version
 #     --help,     -h  Displays help message
 #     --update,   -U  Update your system
@@ -348,7 +348,7 @@ _params () {
             '--help'|'-h')      __help=1;;
             '--version'|'-v')   __version=1;;
             '--install'|'-i')   __install=1;;
-            '--uninstall'|'-u') __uninstall=1;;
+            '--remove'|'-r')    __uninstall=1;;
 			'--update'|'-U')    __update=1;;
 			# FLAGS
 			'--pt')             _LANG='pt';;

@@ -1,10 +1,10 @@
 # displays help message
 _usage () {
 	cat <<EOF
- usage: ${0##*/} [Options|Flags]
-   Options:
+ uso: ${0##*/} [Opções|Flags]
+   Opções:
      --install,  -i  Instala bsprp
-     --unistall, -u  Desinstala bsprp
+     --remove,   -r  Remove bsprp
      --version,  -v  Mostra a versão
      --help,     -h  Mostra uma mensagem de ajuda
      --update,   -U  Atualiza o seu sistema
